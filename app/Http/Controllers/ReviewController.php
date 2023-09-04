@@ -32,7 +32,7 @@ class ReviewController extends Controller
 
         return response([
             'message' => 'User does not exist'
-        ], 201);
+        ], 403);
     }
 
     public function findById(Request $request, string $id)
