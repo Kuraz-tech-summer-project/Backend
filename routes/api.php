@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -20,9 +21,18 @@ use Illuminate\Support\Facades\Route;
 }); */
 
 Route::prefix('v1')->group(function () {
+    //User routes
     Route::get('/users', [UserController::class, 'getUsers']);
     Route::get('/users/id/{id}', [UserController::class, 'findById']);
     Route::post('/users/signUp', [UserController::class, 'signUpUser']);
     Route::post('/users/signIn', [UserController::class, 'signInUser']);
     Route::put('/users/edit/{id}', [UserController::class, 'updateUser']);
+
+    //Reviews routes
+    Route::get('/reviews/id/{id}', [ReviewController::class, 'findById']);
+    Route::get('/reviews/user_id/{userId}', [ReviewController::class, 'findByUserId']);
+    Route::get('/reviews/product_id/{productId}', [ReviewController::class, 'findByProductId']);
+    Route::post('/reviews', [ReviewController::class, 'createReview']);
+    Route::put('/reviews/edit/{reviewId}', [ReviewController::class, 'editReview']);
+    Route::delete('/reviews/{reviewId}', [ReviewController::class, 'deleteReview']);
 });
