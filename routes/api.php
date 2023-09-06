@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -35,4 +36,10 @@ Route::prefix('v1')->group(function () {
     Route::post('/reviews', [ReviewController::class, 'createReview']);
     Route::put('/reviews/edit/{reviewId}', [ReviewController::class, 'editReview']);
     Route::delete('/reviews/{reviewId}', [ReviewController::class, 'deleteReview']);
+
+    //Cart Routes
+    Route::post('/carts', [CartController::class, 'createCart']);
+    Route::get('/carts/user/{userId}', [CartController::class, 'findByUserId']);
+    Route::get('/carts/{userId}/{status}', [CartController::class, 'findByStatus']);
+    Route::delete('/carts/id/{cartId}', [CartController::class, 'deleteItem']);
 });

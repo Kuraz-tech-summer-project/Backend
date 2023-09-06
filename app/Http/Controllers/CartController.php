@@ -52,7 +52,7 @@ class CartController extends Controller
         return $cartItems;
     }
 
-    public function findByStatus(Request $request, string $status, string $userId) 
+    public function findByStatus(Request $request, string $userId, string $status) 
     {
         if (!$status || !$userId) {
             return response([
