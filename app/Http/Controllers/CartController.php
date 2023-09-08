@@ -69,7 +69,8 @@ class CartController extends Controller
             ], 200);
         }
 
-        return new CartCollection($cartItems);
+        
+        return new CartCollection($cartItems->toQuery()->paginate(5));
     }
 
     public function findByStatus(Request $request, string $userId, string $status) 
