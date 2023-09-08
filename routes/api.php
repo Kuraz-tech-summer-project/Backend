@@ -42,4 +42,5 @@ Route::prefix('v1')->group(function () {
     Route::get('/carts/user/{userId}', [CartController::class, 'findByUserId']);
     Route::get('/carts/{userId}/{status}', [CartController::class, 'findByStatus']);
     Route::delete('/carts/id/{cartId}', [CartController::class, 'deleteItem']);
+    Route::get('/reviews', [ReviewController::class, 'getReviews']);
 });

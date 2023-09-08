@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserCollection;
+use App\Http\Resources\UserResource;
 use App\Models\User;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -33,14 +35,13 @@ class UserController extends Controller
             'password' => bcrypt($fields['password'])
         ]);
 
+        $userResource = new UserResource($user);
         $token = $user->createToken("mytoken")->plainTextToken;
 
-        $response = [
-            'user' => $user,
+        return response()->json([
+            'user' => $userResource,
             'token' => $token
-        ];
-
-        return response($response, 201);
+        ], 201);
     }
 
     public function signInUser(Request $request)
@@ -60,8 +61,10 @@ class UserController extends Controller
 
         $token = $user->createToken("mytoken")->plainTextToken;
 
+        $userResource = new UserResource($user);
+
         $response = [
-            'user' => $user,
+            'user' => $userResource,
             'token' => $token
         ];
 
@@ -75,16 +78,16 @@ class UserController extends Controller
                 'message' => 'No ID was provided!!'
             ], 401);
         }
-        $user = User::find($id);
 
-        if (is_null($user) || empty($user)) {
+        try {
+            $user = User::findOrfail($id);
+            $user->update($request->all());
+            return new UserResource($user);
+        } catch (ModelNotFoundException $ex) {
             return response([
                 'message' => 'User was not found!'
             ], 404);
         }
-        
-        $user->update($request->all());
-        return response($user, 200);
     }
 
     public function findById(string $id)
@@ -95,39 +98,18 @@ class UserController extends Controller
             ], 404);
         }
 
-        $user = User::find($id);
-        
-        if (is_null($user) || empty($user)) {
+        try {
+            $user = User::findOrfail($id);
+            return new UserResource($user);
+        } catch (ModelNotFoundException $ex) {
             return response([
                 'message' => 'User was not found!'
             ], 404);
         }
-        
-        return response($user, 200);
     }
 
     public function getUsers(Request $request)
     {
-        $perPage = $request->input('limit', 10); // Number of items per page, default to 10
-        $page = $request->input('page', 1); // Current page number, default to 1
-
-        $offset = ($page - 1) * $perPage;
-
-        $results = DB::table('users')
-            ->offset($offset)
-            ->limit($perPage)
-            ->get('*');
-
-        $totalItems = DB::table('users')->count();
-        $totalPages = ceil($totalItems / $perPage);
-
-        $response = [
-            'page' => $page,
-            'limit' => $perPage,
-            'total' => $totalPages,
-            'data' => $results,
-        ];
-
-        return response($response, 200);
+        return new UserCollection(User::paginate());
     }
 }

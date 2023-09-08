@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ReviewCollection;
+use App\Http\Resources\ReviewResource;
 use App\Models\Review;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -26,8 +28,8 @@ class ReviewController extends Controller
                 'review' => $fields['review'],
                 'rating' => $fields['rating']
             ]);
-
-            return response($review, 201);
+            
+            return new ReviewResource($review);
         }
 
         return response([
@@ -45,7 +47,7 @@ class ReviewController extends Controller
             ], 404);
         }
 
-        return response($review, 200);
+        return new ReviewResource($review);
     }
 
     public function findByUserId(Request $request, string $userId)
@@ -63,7 +65,7 @@ class ReviewController extends Controller
             ], 404);
         }
 
-        return $review;
+        return new ReviewCollection($review);
     }
 
     public function findByProductId(Request $request, string $productId)
@@ -74,14 +76,14 @@ class ReviewController extends Controller
             ], 403);
         }
 
-        $review = Review::where('product_id', $productId)->first();
+        $review = Review::where('product_id', $productId)->get();
         if (is_null($review) || empty($review)) {
             return response([
                 'message' => 'review was not found!'
             ], 404);
         }
 
-        return response($review, 200);
+        return new ReviewCollection($review);
     }
 
     public function editReview(Request $request, string $reviewId)
@@ -94,7 +96,7 @@ class ReviewController extends Controller
 
         $review = Review::find($reviewId);
         $review->update($request->all());
-        return response($review, 200);
+        return new ReviewResource($review);
     }
 
     public function deleteReview(Request $request, string $reviewId)
@@ -112,5 +114,10 @@ class ReviewController extends Controller
         ];
 
         return response($response, 200);
+    }
+
+    public function getReviews(Request $request)
+    {
+        return new ReviewCollection(Review::paginate());
     }
 }
