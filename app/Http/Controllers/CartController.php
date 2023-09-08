@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CartCollection;
+use App\Http\Resources\CartResource;
 use App\Models\Cart;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -26,12 +28,30 @@ class CartController extends Controller
                 'quantity' => $fields['quantity']
             ]);
 
-            return $cartItem;
+            return new CartResource($cartItem);
         }
 
         return response([
             'message' => 'User does not exist'
         ], 404);
+    }
+
+    public function findCartById(Request $request, string $id) 
+    {
+        if (!$id) {
+            return response([
+                'message' => 'User id was not provided!'
+            ], 403);
+        }
+
+        $cartItem = Cart::find($id);
+        if (is_null($cartItem) || empty($cartItem)) {
+            return response([
+                'message' => 'cart was not found!'
+            ], 200);
+        }
+
+        return new CartResource($cartItem);
     }
 
     public function findByUserId(Request $request, string $userId)
@@ -49,7 +69,7 @@ class CartController extends Controller
             ], 200);
         }
 
-        return $cartItems;
+        return new CartCollection($cartItems);
     }
 
     public function findByStatus(Request $request, string $userId, string $status) 
@@ -68,7 +88,7 @@ class CartController extends Controller
             ], 404);
         }
 
-        return $cartItems;
+        return new CartCollection($cartItems);
     }
 
     public function deleteItem (Request $request, string $cartId)
@@ -86,5 +106,10 @@ class CartController extends Controller
         ];
 
         return response($response, 200);
+    }
+
+    public function getCartItems(Request $request)
+    {
+        return new CartCollection(Cart::paginate());
     }
 }

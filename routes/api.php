@@ -30,6 +30,7 @@ Route::prefix('v1')->group(function () {
     Route::put('/users/edit/{id}', [UserController::class, 'updateUser']);
 
     //Reviews routes
+    Route::get('/reviews', [ReviewController::class, 'getReviews']);
     Route::get('/reviews/id/{id}', [ReviewController::class, 'findById']);
     Route::get('/reviews/user_id/{userId}', [ReviewController::class, 'findByUserId']);
     Route::get('/reviews/product_id/{productId}', [ReviewController::class, 'findByProductId']);
@@ -39,8 +40,9 @@ Route::prefix('v1')->group(function () {
 
     //Cart Routes
     Route::post('/carts', [CartController::class, 'createCart']);
+    Route::get('/carts', [CartController::class, 'getCartItems']);
+    Route::get('/carts/id/{cartId}', [CartController::class, 'findCartById']);
     Route::get('/carts/user/{userId}', [CartController::class, 'findByUserId']);
     Route::get('/carts/{userId}/{status}', [CartController::class, 'findByStatus']);
     Route::delete('/carts/id/{cartId}', [CartController::class, 'deleteItem']);
-    Route::get('/reviews', [ReviewController::class, 'getReviews']);
 });
