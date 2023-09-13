@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use App\Http\Resources\SearchProduct;
+use App\Http\Resources\ProductResource;
 
 class ProductController extends Controller
 {
@@ -13,7 +16,10 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return product::all();
+
+        $data = product::all();
+        return ProductResource::collection($data);
+        //  return product::all();
     }
 
     /**
@@ -38,15 +44,26 @@ class ProductController extends Controller
 
             'quantity' => 'required|numeric',
             'price' => 'required|numeric',
-            'date' => 'required|date',
+            'date' => 'required|date_format:Y-m-d',
             'category'=>'required |string'
         ]);
-        $product= product::create([
-            'quantity'=>$fields['quantity'],
-            'price'=>$fields['price'],
-            'date'=>$fields['date'],
-            'category'=>$fields['category'],
-        ]);
+        if ($fields) {
+            $product = Product::create([
+                'quantity' => $fields['quantity'],
+                'price' => $fields['price'],
+                'date' => $fields['date'],
+                'category' => $fields['category'],
+            ]);
+
+            // Product created successfully
+            // ...
+
+            return response()->json(['message' => 'Product created successfully'], Response::HTTP_CREATED);
+        } else {
+            // Validation failed
+            return response()->json(['message' => 'Validation failed'], Response::HTTP_BAD_REQUEST);
+        }
+
 
     }
 
@@ -58,8 +75,16 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        return product::find($id);
+        $product= product::find($id);
+        if (is_null($product) || empty($product)) {
+            return response([
+                'message' => 'the product is not found!'
+            ], 404);
+        }
+
+        return response($product, 200);
     }
+
 
      /**
      * search for name
@@ -69,8 +94,16 @@ class ProductController extends Controller
      */
     public function search($category)
     {
-        return product::where('category','like','%'.$category.'%')->get();
+
+        if (!$category) {
+            return response([
+                'message' => 'category that u looking for is not found!'], 403);
+        }
+       $data= product::where('category','like','%'.$category.'%')->get();
+     return SearchProduct::collection($data);
     }
+
+
 
     /**
      * Update the specified resource in storage.
