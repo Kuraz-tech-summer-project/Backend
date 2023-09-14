@@ -1,4 +1,8 @@
 <?php
+
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ImageController;
@@ -42,7 +46,31 @@ Route::prefix('v1')->group(function () {
     Route::get('/carts/{userId}/{status}', [CartController::class, 'findByStatus']);
     Route::delete('/carts/id/{cartId}', [CartController::class, 'deleteItem']);
 
-    // !yob-branch
+    //User routes
+    Route::get('/users', [UserController::class, 'getUsers']);
+    Route::get('/users/id/{id}', [UserController::class, 'findById']);
+    Route::post('/users/signUp', [UserController::class, 'signUpUser']);
+    Route::post('/users/signIn', [UserController::class, 'signInUser']);
+    Route::put('/users/edit/{id}', [UserController::class, 'updateUser']);
+
+    //Reviews routes
+    Route::get('/reviews', [ReviewController::class, 'getReviews']);
+    Route::get('/reviews/id/{id}', [ReviewController::class, 'findById']);
+    Route::get('/reviews/user_id/{userId}', [ReviewController::class, 'findByUserId']);
+    Route::get('/reviews/product_id/{productId}', [ReviewController::class, 'findByProductId']);
+    Route::post('/reviews', [ReviewController::class, 'createReview']);
+    Route::put('/reviews/edit/{reviewId}', [ReviewController::class, 'editReview']);
+    Route::delete('/reviews/{reviewId}', [ReviewController::class, 'deleteReview']);
+
+    //Cart Routes
+    Route::post('/carts', [CartController::class, 'createCart']);
+    Route::get('/carts', [CartController::class, 'getCartItems']);
+    Route::get('/carts/id/{cartId}', [CartController::class, 'findCartById']);
+    Route::get('/carts/user/{userId}', [CartController::class, 'findByUserId']);
+    Route::get('/carts/{userId}/{status}', [CartController::class, 'findByStatus']);
+    Route::delete('/carts/id/{cartId}', [CartController::class, 'deleteItem']);
+
+  // !yob-branch
     Route::get('/products', [ProductController::class, 'index']);
     Route::post('/products', [ProductController::class, 'store']);
     Route::get('/products/{id}', [ProductController::class, 'show']);
@@ -55,21 +83,8 @@ Route::prefix('v1')->group(function () {
     Route::get('/image/{id}', [ImagesController::class, 'show']);
     Route::put('//image/edit/{id}', [ImagesController::class, 'update']);
     Route::delete('//image/delete/{id}', [ImagesController::class, 'destroy']);
+
 });
-// Route::get('/products',[ProductController::class ,'index']);
-// Route::post('/products',[ProductController::class ,'store']);
-// Route::get('/products/{id}',[ProductController::class ,'show']);
-// Route::get('/products/search/{category}',[ProductController::class ,'search']);
-// Route::delete('//products/delete/{id}',[ProductController::class ,'destroy']);
-
-//                         //TODO image
-// Route::post('/image/store',[ImagesController::class ,'store']);
-// Route::get('/image',[ImagesController::class ,'index']);
-// Route::get('/image/{id}',[ImagesController::class ,'show']);
-// Route::put('//image/edit/{id}',[ImagesController::class ,'update']);
-// Route::delete('//image/delete/{id}',[ImagesController::class ,'destroy']);
-
-//Route::post('/products/{product}/images', [ImageController::class, 'store']);
 
 //!protected routes
 
