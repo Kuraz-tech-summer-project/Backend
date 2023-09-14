@@ -17,7 +17,7 @@ use App\Models\Images;
 |
 */
 //?public routes
-Route::prefix('')->group(function () {
+Route::prefix('v1')->group(function () {
     //User routes
     Route::get('/users', [UserController::class, 'getUsers']);
     Route::get('/users/id/{id}', [UserController::class, 'findById']);
