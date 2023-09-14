@@ -75,14 +75,14 @@ Route::prefix('v1')->group(function () {
     Route::post('/products', [ProductController::class, 'store']);
     Route::get('/products/{id}', [ProductController::class, 'show']);
     Route::get('/products/search/{category}', [ProductController::class, 'search']);
-    Route::delete('//products/delete/{id}', [ProductController::class, 'destroy']);
+    Route::delete('/products/delete/{id}', [ProductController::class, 'destroy']);
 
     //TODO image
     Route::post('/image/store', [ImagesController::class, 'store']);
     Route::get('/image', [ImagesController::class, 'index']);
     Route::get('/image/{id}', [ImagesController::class, 'show']);
-    Route::put('//image/edit/{id}', [ImagesController::class, 'update']);
-    Route::delete('//image/delete/{id}', [ImagesController::class, 'destroy']);
+    Route::put('/image/edit/{id}', [ImagesController::class, 'update']);
+    Route::delete('/image/delete/{id}', [ImagesController::class, 'destroy']);
 
 });
 
