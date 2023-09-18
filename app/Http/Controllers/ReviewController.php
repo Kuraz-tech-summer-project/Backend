@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\ReviewCollection;
 use App\Http\Resources\ReviewResource;
+use App\Models\Product;
 use App\Models\Review;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -20,20 +21,21 @@ class ReviewController extends Controller
         ]);
 
         $user_exists = User::where('id', $fields['userId'])->exists();
-        //Todo: Check if product also exists
-        if ($user_exists) {
+        $product_exists = Product::where('id', $fields['productId'])->exists();
+
+        if ($user_exists && $product_exists) {
             $review = Review::create([
                 'user_id' => $fields['userId'],
                 'product_id' => $fields['productId'],
                 'review' => $fields['review'],
                 'rating' => $fields['rating']
             ]);
-            
+
             return new ReviewResource($review);
         }
 
         return response([
-            'message' => 'User does not exist'
+            'message' => 'User or Product does not exist'
         ], 403);
     }
 
