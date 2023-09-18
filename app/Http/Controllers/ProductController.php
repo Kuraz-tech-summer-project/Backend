@@ -1,36 +1,27 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\User;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\SearchProduct;
 use App\Http\Resources\ProductResource;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
 
         $data = product::all();
         return ProductResource::collection($data);
-        //  return product::all();
+
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+
+
 
     /**
      * Store a newly created resource in storage.
@@ -40,8 +31,13 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $fields= $request->validate([
+        // $userId = $request->input('users_id');
+        //  User::find($userId);
 
+        //  $userId = auth()->user()->id;
+
+        $fields= $request->validate([
+            // 'users_id' => 'exists:users,id',
             'quantity' => 'required|numeric',
             'price' => 'required|numeric',
             'date' => 'required|date_format:Y-m-d',
@@ -49,6 +45,7 @@ class ProductController extends Controller
         ]);
         if ($fields) {
             $product = Product::create([
+                // 'users_id' => $userId,
                 'quantity' => $fields['quantity'],
                 'price' => $fields['price'],
                 'date' => $fields['date'],
@@ -56,8 +53,7 @@ class ProductController extends Controller
             ]);
 
             // Product created successfully
-            // ...
-
+            // ........
             return response()->json(['message' => 'Product created successfully'], Response::HTTP_CREATED);
         } else {
             // Validation failed
@@ -67,12 +63,7 @@ class ProductController extends Controller
 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
+
     public function show($id)
     {
         $product= product::find($id);
@@ -86,12 +77,7 @@ class ProductController extends Controller
     }
 
 
-     /**
-     * search for name
-     *
-     * @param  str $name
-     * @return \Illuminate\Http\Response
-     */
+
     public function search($category)
     {
 
@@ -105,13 +91,7 @@ class ProductController extends Controller
 
 
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(Request $request, $id)
     {
         $product=product::find($id);
@@ -127,12 +107,7 @@ class ProductController extends Controller
         return $product;
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy($id)
     {
         return product::destroy($id);
