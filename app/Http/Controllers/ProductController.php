@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Resources\ProductCollection;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use App\Http\Resources\SearchProduct;
 use App\Http\Resources\ProductResource;
 use App\Models\User;
 
