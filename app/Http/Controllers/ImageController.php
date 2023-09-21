@@ -1,58 +1,49 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Models\User;
 use App\Models\Images;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use App\Http\Requests\ImageRequest;
-use App\Http\Resources\ImagesResource;
+use Illuminate\Support\Facades\Auth;
 
 class ImageController extends Controller
 {
+    //
    public function index(){
-   $data =images::all();
-   return ImagesResource::collection($data);
+    return images::all();
    }
-   public function store(ImageRequest $request){
+   public function store(Request $request){
+    $feild = $request->validate([
 
-    $userId = $request->input('users_id');
-    $productId = $request->input('product_id');
 
-    $user = User::find($userId);
-    $product = product::find($productId);
-    if($user&&$product){
-    $record = images::create([
-        'users_id' => $userId,
-        'product_id' => $productId,
-        'images_url' => $request->images_url,
+        //'users_id' => 'integer',
+        'product_id' => 'required|integer',
+        'images_url' => 'required|url',
+        'status' => 'in:pending,Delivered',
     ]);
-    return response()->json($record, 201);
-     }
-     return response()->json(['message' => ' User or Product id  Not Found',404]);
+    //$imageUrl = $request->input('images_url');
+   // $userId = $request->input('users_id');
+    $productId = $request->input('product_id');
+    $feild['users_id'] = Auth::id();
+     Images::create([
+        //'user_id' => $userId,
+        'product_id' => $productId,
+        'images_url' => $feild['images_url'],
+        'status' => $feild['status'],
+    ]);
 
-    }
-     public function update(ImageRequest $request,$id){
-
-        $image = images::find($id);
-        if($image){
-             $image->images_url = $request->images_url;
 
 
-    $image->save();
+    return response(['message' => 'images url stored',202]);
+    // $user = Auth::user();
+    // $product = Product::find($request->input('product_id'));
 
-    // Return a response
-    return response()->json(['message' => 'Resource updated successfully']);
-     }
-     return response()->json(['message' => 'Resource NOT FOUND',404]);
-    }
-     public function destroy($id){
-        $image=images::find($id);
-        if($image){
-            $image->delete();
-            return response()->json(['message' => 'Resource deleted successfully']);
-        }
-        return response()->json(['message' => 'Image Not Found',404]);
-     }
+    // $image = new Images;
+    // $image->user_id = $user->id;
+    // $image->product_id = $product->id;
+    // // set other image properties...
+    // $image->save();
+
+    // return response()->json($image, 201);
+   }
 }

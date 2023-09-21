@@ -15,9 +15,11 @@ return new class extends Migration
     {
         Schema::create('order', function (Blueprint $table) {
             $table->id();
+            //$table->unsignedBigInteger('users_id');
             $table->unsignedBigInteger('product_id');
             $table->integer('quantity');
             $table->enum('status', ['Pending', 'Wait', 'Delivered'])->default('Pending');
+          //  $table->foreign('users_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('product_id')->references('id')->on('product')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });

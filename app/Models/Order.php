@@ -2,23 +2,19 @@
 
 namespace App\Models;
 
-use App\Models\Product;
-//use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Images extends Model
+class Order extends Model
 {
     use HasFactory;
-    protected $table='images';
-    protected $fillable=['product_id','images_url','status'];
-
-        public function user(){
+    protected $table='order';
+    protected $fillable=['users_id','product_id','quantity','status'];
+    function user(){
         return $this->belongsTo(User::class);
     }
-
-    public function product()
-    {
+    function product(){
         return $this->belongsTo(Product::class);
     }
 }
+

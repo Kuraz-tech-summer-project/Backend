@@ -52,11 +52,10 @@ class ProductController extends Controller
                 'category' => $fields['category'],
             ]);
 
-            // Product created successfully
-            // ........
+
             return response()->json(['message' => 'Product created successfully'], Response::HTTP_CREATED);
         } else {
-            // Validation failed
+
             return response()->json(['message' => 'Validation failed'], Response::HTTP_BAD_REQUEST);
         }
 

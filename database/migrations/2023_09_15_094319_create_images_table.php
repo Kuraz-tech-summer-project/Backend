@@ -15,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('images', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('users_id');
+            //$table->unsignedBigInteger('users_id');
             $table->unsignedBigInteger('product_id');
-            $table->foreign('users_id')->references('id')->on('users');
-            $table->foreign('product_id')->references('id')->on('product');
+          //  $table->foreign('users_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('product_id')->references('id')->on('product')->onUpdate('cascade')->onDelete('cascade');
             $table->string('images_url');
             $table->enum('status', [ 'pending','Delivered'])->default('pending');
             $table->timestamps();
