@@ -195,6 +195,10 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        /**
+         * Swagger API Docs
+         */
+        L5Swagger\L5SwaggerServiceProvider::class,
     ],
 
     /*

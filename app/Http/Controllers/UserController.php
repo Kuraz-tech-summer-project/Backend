@@ -8,9 +8,27 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use OpenApi\Annotations as OA;
 
+/**
+ * Class UserController.
+ *
+ */
 class UserController extends Controller
 {
+    /**
+     * Sign up a new user.
+     *
+     * @OA\Post(
+     *     path="/users/signUp",
+     *     tags={"User"},
+     *     operationId="signUpUser",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successfully signed Up"
+     *     )
+     * )
+     */
     public function signUpUser(Request $request)
     {
         $fields = $request->validate([
@@ -107,7 +125,24 @@ class UserController extends Controller
             ], 404);
         }
     }
-
+    /**
+     * @OA\Get(
+     *     path="/v1/users",
+     *     tags={"User"},
+     *     summary="Finds currenctly signed up users.",
+     *     description="Accepts GET request to get all the users from the Users table.",
+     *     operationId="getUsers",
+     *     deprecated=false,
+     *     @OA\Response(
+     *         response=200,
+     *         description="successful operation",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/User")
+     *         ),
+     *     ),
+     * )
+     */
     public function getUsers(Request $request)
     {
         return new UserCollection(User::paginate());

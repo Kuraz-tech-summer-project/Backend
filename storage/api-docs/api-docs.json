@@ -1,0 +1,68 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Laravel Ecommerce Backend",
+        "description": "Ecommerce rest api backend made with Laravel.",
+        "version": "1.0.0",
+        "x-logo": {
+            "url": "https://via.placeholder.com/190x90.png?text=L5-Swagger"
+        }
+    },
+    "paths": {
+        "/users/signUp": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Sign up a new user.",
+                "operationId": "signUpUser",
+                "responses": {
+                    "200": {
+                        "description": "Successfully signed Up"
+                    }
+                }
+            }
+        },
+        "/v1/users": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Finds currenctly signed up users.",
+                "description": "Accepts GET request to get all the users from the Users table.",
+                "operationId": "getUsers",
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/User"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "deprecated": false
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "User": {
+                "title": "User model",
+                "description": "User model",
+                "properties": {
+                    "fillable": {
+                        "title": "fname",
+                        "description": "fname"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    }
+}

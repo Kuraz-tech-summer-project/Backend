@@ -8,6 +8,14 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * Class User.
+ *
+ * @OA\Schema(
+ *     title="User model",
+ *     description="User model",
+ * )
+ */
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -15,9 +23,10 @@ class User extends Authenticatable
     public static $allowedRoles = ['admin', 'user'];
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
+     * @OA\Property(
+     *     description="fname",
+     *     title="fname",
+     * )
      */
 
     protected $fillable = [
