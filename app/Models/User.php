@@ -11,8 +11,6 @@ use Laravel\Sanctum\HasApiTokens;
 /**
  * Class User.
  *
- * @author  Donii Sergii <doniysa@gmail.com>
- *
  * @OA\Schema(
  *     title="User model",
  *     description="User model",
