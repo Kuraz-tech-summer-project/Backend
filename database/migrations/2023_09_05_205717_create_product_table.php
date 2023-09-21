@@ -15,10 +15,12 @@ return new class extends Migration
     {
         Schema::create('product', function (Blueprint $table) {
             $table->id();
+          //  $table->unsignedBigInteger('users_id');
             $table->integer('quantity');
             $table->decimal('price',20,10);
             $table->date('date')->format('Y-m-d');
             $table->string('category');
+           //$table->foreign('users_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }

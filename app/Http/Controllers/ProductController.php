@@ -3,15 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\ProductCollection;
-use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Models\User;
+use App\Models\Product;
+use Illuminate\Http\Response;
 use App\Http\Resources\ProductResource;
 use App\Models\User;
 
 class ProductController extends Controller
 {
-
-
     public function index(Request $request)
     {
         $query = Product::query();
@@ -44,7 +44,6 @@ class ProductController extends Controller
 
         return new ProductCollection($products);
     }
-
 
     public function store(Request $request)
     {
@@ -82,7 +81,6 @@ class ProductController extends Controller
         ], 403);
     }
 
-
     public function show($id)
     {
         $product = product::find($id);
@@ -94,7 +92,6 @@ class ProductController extends Controller
 
         return new ProductResource($product);
     }
-
 
     public function search($query)
     {
@@ -113,7 +110,6 @@ class ProductController extends Controller
         return new ProductCollection($products);
     }
 
-
     public function update(Request $request, $id)
     {
         $product = product::find($id);
@@ -121,7 +117,7 @@ class ProductController extends Controller
 
         return new ProductResource($product);
     }
-
+          
     public function destroy($id)
     {
         return new ProductResource(product::destroy($id));

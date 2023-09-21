@@ -19,7 +19,7 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
-
+    protected $table='users';
     public static $allowedRoles = ['admin', 'user'];
 
     /**
@@ -28,6 +28,7 @@ class User extends Authenticatable
      *     title="fname",
      * )
      */
+
     protected $fillable = [
         'fname',
         'lname',
@@ -54,4 +55,11 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    public function product()
+    {
+        return $this->hasMany(Product::class);
+    }
+    public function image(){
+        return  $this->hasMany(Images::class);
+    }
 }

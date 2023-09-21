@@ -88,7 +88,7 @@ Route::prefix('v1')->group(function () {
 
 //!protected routes
 
-// Route::group(['middleware'=>['auth:sanctum']],function(){
-//     Route::put('//products/edit/{id}',[ProductController::class ,'update']);
+Route::group(['middleware'=>['auth:sanctum']],function(){
+    Route::put('/products/edit/{id}',[ProductController::class ,'update']);
 
-// });
+});
