@@ -19,8 +19,7 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
-    protected $table='users';
-    public static $allowedRoles = ['admin', 'user'];
+    protected $table = 'users';
 
     /**
      * @OA\Property(
@@ -35,7 +34,13 @@ class User extends Authenticatable
         'phonenumber',
         'email',
         'password',
+        'role_id',
     ];
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
 
     /**
      * The attributes that should be hidden for serialization.
@@ -59,7 +64,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(Product::class);
     }
-    public function image(){
+    public function image()
+    {
         return  $this->hasMany(Images::class);
     }
 }

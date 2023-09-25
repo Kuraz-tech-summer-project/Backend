@@ -44,7 +44,7 @@ class UserController extends Controller
                     ->numbers()
                     ->symbols()
             ],
-            'phonenumber' => 'required'
+            'phonenumber' => 'required',
         ]);
 
         $user_exists = User::where('email', $fields['email'])->exists();
@@ -58,7 +58,8 @@ class UserController extends Controller
             'lname' => $fields['lname'],
             'email' => $fields['email'],
             'phonenumber' => $fields['phonenumber'],
-            'password' => bcrypt($fields['password'])
+            'password' => bcrypt($fields['password']),
+            'role_id' => 2
         ]);
 
         $userResource = new UserResource($user);
