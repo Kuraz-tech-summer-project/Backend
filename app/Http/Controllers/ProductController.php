@@ -8,7 +8,7 @@ use App\Models\User;
 use App\Models\Product;
 use Illuminate\Http\Response;
 use App\Http\Resources\ProductResource;
-use App\Models\User;
+use App\Models\Images;
 
 class ProductController extends Controller
 {
@@ -55,7 +55,8 @@ class ProductController extends Controller
             'quantity' => 'required|numeric',
             'price' => 'required|numeric',
             'date' => 'required|date_format:Y-m-d',
-            'category' => 'required |string'
+            'category' => 'required |string',
+            'imgUrl' => 'required | string'
         ]);
 
         //only add product if user exists
@@ -72,12 +73,18 @@ class ProductController extends Controller
                 'category' => $fields['category'],
             ]);
 
+            Images::create([
+                'product_id' => $product->id,
+                'images_url' => $fields['imgUrl'],
+                'status' => 'Pending'
+            ]);
+
             return new ProductResource($product);
         }
 
 
         return response([
-            'message' => 'Please Enter all the fields!!'
+            'message' => "User with the provided Id doesn't exist!"
         ], 403);
     }
 
@@ -117,7 +124,7 @@ class ProductController extends Controller
 
         return new ProductResource($product);
     }
-          
+
     public function destroy($id)
     {
         return new ProductResource(product::destroy($id));

@@ -3,12 +3,9 @@
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\UserController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ImageController;
-use App\Http\Controllers\ImagesController;
 use App\Http\Controllers\ProductController;
-use App\Models\Images;
 
 /*
 |--------------------------------------------------------------------------
@@ -79,16 +76,15 @@ Route::prefix('v1')->group(function () {
   Route::delete('/products/delete/{id}', [ProductController::class, 'destroy']);
 
   //TODO image
-  Route::post('/image/store', [ImagesController::class, 'store']);
-  Route::get('/image', [ImagesController::class, 'index']);
-  Route::get('/image/{id}', [ImagesController::class, 'show']);
-  Route::put('/image/edit/{id}', [ImagesController::class, 'update']);
-  Route::delete('/image/delete/{id}', [ImagesController::class, 'destroy']);
+  Route::post('/image/store', [ImageController::class, 'store']);
+  Route::get('/image', [ImageController::class, 'index']);
+  Route::get('/image/{id}', [ImageController::class, 'show']);
+  Route::put('/image/edit/{id}', [ImageController::class, 'update']);
+  Route::delete('/image/delete/{id}', [ImageController::class, 'destroy']);
 });
 
 //!protected routes
 
-Route::group(['middleware'=>['auth:sanctum']],function(){
-    Route::put('/products/edit/{id}',[ProductController::class ,'update']);
-
+Route::group(['middleware' => ['auth:sanctum']], function () {
+  Route::put('/products/edit/{id}', [ProductController::class, 'update']);
 });

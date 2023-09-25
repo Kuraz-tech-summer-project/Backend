@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
 use OpenApi\Annotations as OA;
 
 /**
@@ -35,7 +36,14 @@ class UserController extends Controller
             'fname' => 'required|string',
             'lname' => 'required|string',
             'email' => 'required|email',
-            'password' => 'required',
+            'password' => [
+                'required',
+                Password::min(8)
+                    ->letters()
+                    ->mixedCase()
+                    ->numbers()
+                    ->symbols()
+            ],
             'phonenumber' => 'required'
         ]);
 

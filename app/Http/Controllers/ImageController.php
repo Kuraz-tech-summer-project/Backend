@@ -14,9 +14,6 @@ class ImageController extends Controller
    }
    public function store(Request $request){
     $feild = $request->validate([
-
-
-        //'users_id' => 'integer',
         'product_id' => 'required|integer',
         'images_url' => 'required|url',
         'status' => 'in:pending,Delivered',
